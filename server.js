@@ -2,16 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const dotenv = require("dotenv");
-const OpenAI = require("openai");
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
 
 app.use(cors());
 app.use(express.json());
@@ -92,65 +87,64 @@ Important rules:
 - Return only raw JSON.
 - Do not wrap in markdown.
 - Do not add commentary before or after the JSON.
-- Make stage3 detailed and useful.
 `;
 
-    const response = await client.responses.create({
-      model: "gpt-5",
-      input: [
-        {
-          role: "system",
-          content: systemPrompt
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      text: {
-        format: {
-          type: "json_schema",
-          name: "prompt_transform_response",
-          schema: {
-            type: "object",
-            additionalProperties: false,
-            properties: {
-              stage1: { type: "string" },
-              stage2: { type: "string" },
-              stage3: { type: "string" },
-              score: {
-                type: "object",
-                additionalProperties: false,
-                properties: {
-                  total: { type: "number" },
-                  clarity: { type: "number" },
-                  specificity: { type: "number" },
-                  context: { type: "number" },
-                  systemThinking: { type: "number" },
-                  label: { type: "string" }
-                },
-                required: [
-                  "total",
-                  "clarity",
-                  "specificity",
-                  "context",
-                  "systemThinking",
-                  "label"
-                ]
-              }
-            },
-            required: ["stage1", "stage2", "stage3", "score"]
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "http://localhost:3000",
+        "X-Title": "Prompt to Architect"
+      },
+      body: JSON.stringify({
+        model: "openrouter/free",
+        messages: [
+          {
+            role: "system",
+            content: systemPrompt
+          },
+          {
+            role: "user",
+            content: prompt
           }
-        }
-      }
+        ],
+        temperature: 0.7
+      })
     });
 
-    const output = response.output_text;
-    const parsed = JSON.parse(output);
+    const raw = await response.json();
+
+    if (!response.ok) {
+      console.error("OpenRouter API error:", raw);
+      return res.status(response.status).json({
+        error: raw?.error?.message || "OpenRouter request failed."
+      });
+    }
+
+    const text = raw?.choices?.[0]?.message?.content;
+
+    if (!text) {
+      return res.status(500).json({
+        error: "No response text returned from OpenRouter."
+      });
+    }
+
+    let parsed;
+
+    try {
+      parsed = JSON.parse(text);
+    } catch (parseError) {
+      console.error("Failed to parse model JSON:", text);
+      return res.status(500).json({
+        error: "Model returned invalid JSON.",
+        rawOutput: text
+      });
+    }
 
     res.json(parsed);
   } catch (error) {
-    console.error("OpenAI transform error:", error);
+    console.error("Server error:", error);
 
     res.status(500).json({
       error: "Failed to transform prompt.",

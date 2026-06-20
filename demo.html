@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo | From Prompt User to System Architect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="site-shell">
+    <header class="navbar">
+      <a class="logo" href="index.html">Prompt → Architect</a>
+      <nav>
+        <a href="./" class="active">Home</a>
+        <a href="demo.html">Demo</a>
+        <a href="about.html">About</a>
+      </nav>
+    </header>
+
+    <main class="page-layout">
+      <section class="page-header">
+        <span class="eyebrow">Version 2 Demo</span>
+        <h1>Upgrade a prompt into a better AI system design</h1>
+        <p>
+          Type your own prompt or use a template. Then compare how it evolves from a basic request
+          into a more structured prompt and finally a full system-level response blueprint.
+        </p>
+      </section>
+
+      <section class="demo-top-grid">
+        <article class="demo-card">
+          <label for="userPrompt" class="input-label">Enter a prompt</label>
+          <textarea id="userPrompt" placeholder="Example: Help me learn JavaScript for my exam"></textarea>
+
+          <div class="button-row">
+            <button class="btn btn-primary" id="transformBtn">Transform Prompt</button>
+            <button class="btn btn-secondary" id="sampleBtn">Use Sample</button>
+            <button class="btn btn-ghost" id="clearBtn">Clear</button>
+          </div>
+        </article>
+
+        <article class="score-panel">
+          <div class="score-panel-top">
+            <span class="eyebrow eyebrow-small">Prompt Score</span>
+            <h2 id="scoreNumber">0</h2>
+          </div>
+
+          <div class="score-bar">
+            <div class="score-fill" id="scoreFill"></div>
+          </div>
+
+          <div class="score-label" id="scoreLabel">Waiting for prompt...</div>
+
+          <div class="score-breakdown">
+            <div class="score-item">
+              <span>Clarity</span>
+              <strong id="clarityScore">0</strong>
+            </div>
+            <div class="score-item">
+              <span>Specificity</span>
+              <strong id="specificityScore">0</strong>
+            </div>
+            <div class="score-item">
+              <span>Context</span>
+              <strong id="contextScore">0</strong>
+            </div>
+            <div class="score-item">
+              <span>System Thinking</span>
+              <strong id="systemScore">0</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="templates-section">
+        <div class="section-title-row">
+          <h2>Quick prompt templates</h2>
+          <p>Click one to auto-fill the demo.</p>
+        </div>
+
+        <div class="template-grid">
+          <button class="template-card" data-template="Help me learn JavaScript for my exam">
+            <span>Study Help</span>
+            <p>Exam revision / learning support</p>
+          </button>
+
+          <button class="template-card" data-template="Write me an essay introduction about climate change">
+            <span>Essay Writing</span>
+            <p>School writing / structure support</p>
+          </button>
+
+          <button class="template-card" data-template="Help me build a game with HTML CSS and JavaScript">
+            <span>Coding Project</span>
+            <p>Build something technical</p>
+          </button>
+
+          <button class="template-card" data-template="Give me a business idea for students">
+            <span>Business Idea</span>
+            <p>Brainstorm startup concepts</p>
+          </button>
+
+          <button class="template-card" data-template="Write me content ideas for a climate action website">
+            <span>Content Creation</span>
+            <p>Generate creative content</p>
+          </button>
+
+          <button class="template-card" data-template="Plan a 2-week study timetable for my programming exam">
+            <span>Planning</span>
+            <p>Scheduling and productivity</p>
+          </button>
+        </div>
+      </section>
+
+      <section class="stages-grid">
+        <article class="stage-card">
+          <div class="stage-header">
+            <span class="stage-number">01</span>
+            <div>
+              <h2>Prompt User</h2>
+              <p>Raw request with minimal structure</p>
+            </div>
+          </div>
+          <div class="output-box" id="stage1">Your basic prompt will appear here.</div>
+          <div class="stage-actions">
+            <button class="copy-btn" data-target="stage1">Copy</button>
+          </div>
+        </article>
+
+        <article class="stage-card">
+          <div class="stage-header">
+            <span class="stage-number">02</span>
+            <div>
+              <h2>Prompt Engineer</h2>
+              <p>Add context, goals, and constraints</p>
+            </div>
+          </div>
+          <div class="output-box" id="stage2">Your improved prompt will appear here.</div>
+          <div class="stage-actions">
+            <button class="copy-btn" data-target="stage2">Copy</button>
+          </div>
+        </article>
+
+        <article class="stage-card architect-card">
+          <div class="stage-header">
+            <span class="stage-number">03</span>
+            <div>
+              <h2>System Architect</h2>
+              <p>Define role, workflow, output rules, and quality checks</p>
+            </div>
+          </div>
+          <div class="output-box architect-output" id="stage3">Your full system prompt / workflow will appear here.</div>
+          <div class="stage-actions stage-actions-between">
+            <button class="copy-btn" data-target="stage3">Copy</button>
+            <button class="btn btn-secondary small-btn" id="downloadBtn">Download .txt</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="explanation-grid">
+        <article class="explanation-card">
+          <h3>What changes across the 3 stages?</h3>
+          <ul>
+            <li><strong>Prompt User:</strong> asks AI for an answer directly.</li>
+            <li><strong>Prompt Engineer:</strong> improves wording with audience, context, and structure.</li>
+            <li><strong>System Architect:</strong> designs how the AI should behave, reason, format, and check quality.</li>
+          </ul>
+        </article>
+
+        <article class="explanation-card">
+          <h3>Why this is useful</h3>
+          <p>
+            The project teaches that AI quality depends not only on what you ask,
+            but on how you define the surrounding system: task framing, constraints,
+            role design, output expectations, and workflow logic.
+          </p>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
